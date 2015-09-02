@@ -1,18 +1,59 @@
-
 <script type="text/javascript">
-	var dataset = [ 25, 7, 5, 26, 11, 8, 25, 14, 23, 19,
-                14, 11, 22, 29, 11, 13, 12, 17, 18, 10,
-                24, 18, 25, 9, 3 ];
+	var dataset = [ 5, 10, 13, 19, 21, 25, 22, 18, 15, 13,
+                11, 12, 15, 20, 18, 17, 16, 18, 23, 25 ];
 
-	d3.select("body").selectAll("p")
-	.data(dataset)
-	.enter()
-	.append("div")
-	.attr("class","bar")
-	.style("height", function(d){
-		return d*5+"px";
+    var width = 500;
+    var height = 100;
+    var padding = 1;
+    var scaleFactor = 4;
+	var svg = d3.select("body")
+				.append("svg")
+				.attr("width",width)
+				.attr("height",height);
+
+	var bars = svg.selectAll("rect")
+						.data(dataset)
+						.enter()
+							.append("rect")
+							.attr("width",width/dataset.length - padding)
+							.attr("height",100)
+							.attr("x",0)
+							.attr("y",0)
+	
+	bars.attr("x",function(dataValue,index){
+		return index * width/dataset.length
 	})
-	.style("margin-right", function(d){
-		return 5+"px";
+	.attr("height",function(dataValue){
+		return dataValue * scaleFactor
 	})
+	.attr("y",function(dataValue){
+		return height - dataValue*scaleFactor
+	})
+	.attr("fill",function(dataValue){
+		return "rgb(0,0,"+dataValue*10+")"
+	})
+	.attr("href","#")
+
+	var textValues = svg.selectAll("text")
+					.data(dataset)
+					.enter()
+					.append("text")
+					.attr("x",0)
+					.attr("y",0)
+
+	textValues.attr("x",function(dataValue,index){
+		return index * width/dataset.length + (width/dataset.length - padding)/2
+	})
+	.attr("y", function(dataValue){
+		return height - (dataValue * 4) + (width/dataset.length - padding)/2;
+	})
+	.text(function(d){
+		return ""+d
+	})
+	.attr("font-family", "sans-serif")
+   	.attr("font-size", "11px")
+   	.attr("fill", "white")
+   	.attr("text-anchor", "middle")
+   	.attr("href","#")
+
 </script>
